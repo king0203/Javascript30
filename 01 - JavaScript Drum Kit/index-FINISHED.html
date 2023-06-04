@@ -59,24 +59,37 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-  function removeTransition(e) {
-    if (e.propertyName !== 'transform') return;
-    e.target.classList.remove('playing');
-  }
 
-  function playSound(e) {
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-    if (!audio) return;
-
-    key.classList.add('playing');
-    audio.currentTime = 0;
+  function playSound(e){
+    const audio= document.querySelector(`audio[data-key="${e.keyCode}"]`)  
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    if(!audio){return;} //stop the function from running altogether 
+    audio.currentTime=0; //rewind to the start
     audio.play();
+    key.classList.add('playing');//now we are  just adding class, not removing    
+  }
+  
+  function removeTransition(e){
+    if(e.propertyName !== 'transform') return;
+    // The purpose of this conditional check is to ensure that the function only 
+    // executes its logic when the transitionend event is triggered specifically 
+    // for the 'transform' property. This allows you to selectively handle transitions 
+    // for specific CSS properties.
+
+    this.classList.remove('playing');
   }
 
-  const keys = Array.from(document.querySelectorAll('.key'));
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
+  const keys= document.querySelectorAll('.key');
+
+  keys.forEach(key => {
+    key.addEventListener('transitionend', removeTransition)
+  });
+  window.addEventListener('keydown', playSound);   //we are listening to window
+
+//The transitionend event in JavaScript is fired when a CSS transition completes on an element. 
+//It is triggered once for every property that undergoes a transition when the transition is finished.
+
+
 </script>
 
 
